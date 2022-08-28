@@ -1,0 +1,4 @@
+GET http://localhost:5000/claims/79093009-7f05-4227-a894-4f64505ddd38 HTTP/1.1
+Accept: "application/json"
+
+## Response spec in test #5

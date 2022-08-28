@@ -1,0 +1,4 @@
+GET http://localhost:4000/keys HTTP/1.1
+Accept: "application/json"
+
+## Response spec in test #7

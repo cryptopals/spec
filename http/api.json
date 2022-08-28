@@ -1,0 +1,385 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Cryptopals",
+    "termsOfService": "https://cryptopals.com/tos",
+    "description": "This is API spec to be used with Prism for mocking",
+    "contact": {
+      "email": "inbox@cryptopals.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version": "0.0.1"
+  },
+  "servers": [
+    {
+      "url": "https://api.cryptopals.com/"
+    }
+  ],
+  "externalDocs": {
+    "description": "Explaination of roles and operation",
+    "url": "https://cryptopals.com/docs"
+  },
+  "tags": [
+    {
+      "name": "deposit",
+      "description": "Sender deposits and should fullfill",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "https://cryptopals.com/docs/deposit"
+      }
+    },
+    {
+      "name": "transfer",
+      "description": "Sender completes payment and transfers assets",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "https://cryptopals.com/docs/transfer"
+      }
+    },
+    {
+      "name": "claim",
+      "description": "Reciever claims incoming transfer",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "https://cryptopals.com/docs/claim"
+      }
+    },
+    {
+      "name": "redeem",
+      "description": "Reciever confirms and redeems assets",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "https://cryptopals.com/docs/redeem"
+      }
+    },
+    {
+      "name": "publish",
+      "description": "Service publishes keys for transparency",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "https://cryptopals.com/docs/keys"
+      }
+    }
+  ],
+  "paths": {
+    "/deposits": {
+      "post": {
+        "tags": [
+          "deposit"
+        ],
+        "summary": "Requests a deposit with options",
+        "operationId": "depositAssets",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "reciepts",
+                  "chain",
+                  "token",
+                  "tiny"
+                ],
+                "properties": {
+                  "reciepts": {
+                    "type": "array",
+                    "example": [
+                      "XXX",
+                      "YYY"
+                    ],
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "chain": {
+                    "type": "string",
+                    "example": "solana"
+                  },
+                  "token": {
+                    "type": "string",
+                    "example": "usdc"
+                  },
+                  "tiny": {
+                    "type": "number",
+                    "description": "Amount of smallest possible denomination",
+                    "example": 2
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Matches with valid requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "deposit_id"
+                  ],
+                  "properties": {
+                    "deposit_id": {
+                      "type": "string",
+                      "description": "Identifier of deposit used for checking deposit"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Matches with invalid requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error",
+                    "message"
+                  ],
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/deposits/{deposit_id}": {
+      "get": {
+        "tags": [
+          "deposit"
+        ],
+        "parameters": [
+          {
+            "name": "deposit_id",
+            "in": "path",
+            "description": "ID of deposit to check",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "NOT_READY",
+                        "READY"
+                      ]
+                    },
+                    "slips": {
+                      "type": "array",
+                      "example": [
+                        "TT",
+                        "YYY"
+                      ],
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transfers": {
+      "post": {
+        "tags": [
+          "transfer"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "slips",
+                  "email"
+                ],
+                "properties": {
+                  "slips": {
+                    "type": "array",
+                    "example": [
+                      "FFF",
+                      "DDD"
+                    ],
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "virtualuser1@cryptopals.com"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/claims/{claim_id}": {
+      "get": {
+        "tags": [
+          "claim"
+        ],
+        "parameters": [
+          {
+            "name": "claim_id",
+            "in": "path",
+            "description": "ID of claim to check",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "tiny",
+                    "token",
+                    "chain",
+                    "status"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "AVAILABLE",
+                        "CLAIMED"
+                      ]
+                    },
+                    "chain": {
+                      "type": "string",
+                      "example": "solana"
+                    },
+                    "token": {
+                      "type": "string",
+                      "example": "usdc"
+                    },
+                    "tiny": {
+                      "type": "number",
+                      "description": "Number of smallest possible denomination",
+                      "example": 2
+                    },
+                    "signatures": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "claim"
+        ],
+        "parameters": [
+          {
+            "name": "claim_id",
+            "in": "path",
+            "description": "ID of claim to process",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "envelopes"
+                ],
+                "properties": {
+                  "envelopes": {
+                    "type": "array",
+                    "example": [
+                      "AAA",
+                      "DDD"
+                    ],
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Claims is successful signatures will be ready soon",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Already claimed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/redeem": {
+      "description": "TODO"
+    },
+    "/keys": {
+      "description": "TODO"
+    }
+  }
+}

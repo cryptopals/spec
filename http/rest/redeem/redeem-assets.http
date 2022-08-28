@@ -1,0 +1,11 @@
+POST http://localhost:5000/redeems HTTP/1.1
+Content-Type: "application/json"
+Accept: "application/json"
+
+{
+    "coupons": ["RRR", "TTT"],
+    "address": "9ZNTfG4NyQgxy2SWjSiQoUyBPEvXT2xo7fKc5hPYYJ7b",
+    "chain": "solana"
+}
+
+## Response spec in test #6

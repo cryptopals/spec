@@ -1,0 +1,12 @@
+POST http://localhost:5000/deposits HTTP/1.1
+Content-Type: "application/json"
+Accept: "application/json"
+
+{
+    "reciepts": ["XXX", "YYY"],
+    "chain": "solana",
+    "token": "USDC",
+    "tiny": 2
+}
+
+### Response spec in test #1

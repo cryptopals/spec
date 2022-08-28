@@ -1,0 +1,9 @@
+POST http://localhost:5000/claims/79093009-7f05-4227-a894-4f64505ddd38 HTTP/1.1
+Content-Type: "application/json"
+Accept: "application/json"
+
+{
+    "envelopes": ["AAA", "DDD"]
+}
+
+## Response spec in test #4
