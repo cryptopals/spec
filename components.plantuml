@@ -1,0 +1,10 @@
+@startuml
+
+[HTTP API] as api
+[Processor] as server
+api --> server : registers requests
+[Chain Vault] as vault
+server --> vault : manages wallets
+[ZKP microservice] as zkp
+server -left-> zkp : process tokens
+@enduml
