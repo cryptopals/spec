@@ -1,0 +1,18 @@
+@startuml
+object Key
+Key : name
+Key : duration
+Key : overlap
+Key : ephermal
+Key : count
+object Issuer
+Issuer : id
+Issuer : signingKey
+Issuer : parentKey
+object Redemption
+Redemption : parentIssuer
+Redemption : id
+
+Key *-- Issuer
+Issuer o-- Redemption
+@enduml
