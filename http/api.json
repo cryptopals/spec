@@ -101,7 +101,7 @@
                   },
                   "token": {
                     "type": "string",
-                    "example": "usdc"
+                    "example": "USDC"
                   },
                   "tiny": {
                     "type": "number",
@@ -177,6 +177,7 @@
         ],
         "responses": {
           "200": {
+            "description": "Matches when request is valid",
             "content": {
               "application/json": {
                 "schema": {
@@ -244,6 +245,11 @@
               }
             }
           }
+        },
+        "responses": {
+          "200": {
+            "description": "Matches when transfer is successful"
+          }
         }
       }
     },
@@ -266,6 +272,7 @@
         ],
         "responses": {
           "200": {
+            "description": "Matches when request is valid",
             "content": {
               "application/json": {
                 "schema": {
