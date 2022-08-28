@@ -1,0 +1,24 @@
+@@startuml Overview
+actor Sender
+entity Chain
+collections Cryptopals
+actor Reciever
+Sender -> Cryptopals: Requests a deposit with reciepts
+Cryptopals -> Sender: Responds with deposit ID and Chain address
+Sender -> Chain: Transfers assets and include deposit ID
+Chain <- Cryptopals: Listens to mark transaction as ready
+Sender -> Cryptopals: Checks for ready deposit
+group Zero Knowledge decoupling Sender wallet address and Reciever Email
+  Sender -> Cryptopals: Sends blinded tokens
+  Cryptopals -> Sender: Replies signed tokens for transfer
+  Sender -> Cryptopals: Transfer slips with Reciever email address
+end
+Cryptopals -> Cryptopals: Increases Reciever balance
+Reciever -> Cryptopals: Checks for available balance with email
+group Zero Knowledge decoupling Reciever email and Reciever wallet address
+  Reciever -> Cryptopals: Sends envelopes for address transfer
+  Cryptopals -> Reciever: Replies coupons for redemption
+  Reciever -> Cryptopals: Redeems coupons with Reciever wallet address
+end
+Cryptopals -> Chain: Sends tokens to Reciever wallet address
+@@enduml
